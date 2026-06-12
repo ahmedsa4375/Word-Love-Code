@@ -511,7 +511,6 @@ S.ShapeBuilder = (function () {
         callback(S.ShapeBuilder.letter('What?'));
       }
 
-      image.src = url;
     },
 
     circle: function (d) {
