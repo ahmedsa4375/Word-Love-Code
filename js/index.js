@@ -742,15 +742,24 @@ S.ShapeBuilder = (function () {
           particles.update(deltaTime);
           particles.draw(context, image);
 
-          // الجملة الجديدة بالإنجليزية جوة القلب بالظبط هنا يا غالي
-          context.fillStyle = '#ff69b4'; 
-          context.font = 'bold 30px Arial'; 
+ // إعدادات الخط واللون مع تأثير الوميض والنور (Glow Effect)
+          context.fillStyle = '#ffffff'; // خلّينا لون الكلام الأساسي أبيض عشان الإضاءة تبان قوية
+          context.font = 'bold 44px Arial'; 
           context.textAlign = 'center';
           context.textBaseline = 'middle';
-           // السطر الأول: هيدر عيد الميلاد
-          context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 25); 
-          // السطر الثاني: الاسم والتورتة وتحته بمسافة مظبوطة
-          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 25);
+          
+          // هنا سر النور والوميض الوردي النيون 👇
+          context.shadowBlur = 15; // قوة انتشار النور حوالين الكلمة
+          context.shadowColor = '#ff69b4'; // لون النور (وردي فاقع يليق بالقلب)
+
+          // طبع السطر الأول (Happy Birthday)
+          context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 30); 
+          
+          // طبع السطر الثاني (Manon) بنفس التأثير المضيء
+          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 30);
+          
+          // مهم جداً: بنصفر الـ shadow بعد ما نخلص عشان ميبوظش نور الأجزاء التانية من الأنميشن
+          context.shadowBlur = 0;
         }
         
         function onResize() {
