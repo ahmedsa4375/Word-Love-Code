@@ -739,10 +739,10 @@ S.ShapeBuilder = (function () {
 
           // الجملة الجديدة بالإنجليزية جوة القلب بالظبط هنا يا غالي
           context.fillStyle = '#ff69b4'; 
-          context.font = 'bold 40px Arial'; 
+          context.font = 'bold 20px Arial'; 
           context.textAlign = 'center';
           context.textBaseline = 'middle';
-          context.fillText('Happy Birthday Manon 🎂', canvas.width / 2, canvas.height / 2); 
+          context.fillText('Happy Birthday Manon🎂', canvas.width / 2, canvas.height / 2); 
         }
         
         function onResize() {
