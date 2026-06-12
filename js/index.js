@@ -1,4 +1,4 @@
-  /*
+/*
 
   Shape Shifter
   =============
@@ -722,7 +722,7 @@ S.ShapeBuilder = (function () {
           return image;
         })();
         
-     // مصفوفة لتخزين الصواريخ والانفجارات
+        // مصفوفة لتخزين الصواريخ والانفجارات
         var fireworks = [];
 
         function render() {
@@ -732,14 +732,14 @@ S.ShapeBuilder = (function () {
           time = newTime;
           context.clearRect(0, 0, canvas.width, canvas.height);
 
-          // إخفاء العنصر القديم (Wuv U...) تماماً
+          // إخفاء العنصر القديم (Wuv U...) تماماً عشان ميظهرش فوق كلامنا
           var oldElements = document.getElementsByClassName('namebox');
           for (var e = 0; e < oldElements.length; e++) { oldElements[e].style.display = 'none'; }
 
-          // رسم وتحديث الألعاب النارية (الصواريخ) في الخلفية 👇
+          // رسم وتحديث الألعاب النارية (الصواريخ) في الخلفية
           updateAndDrawFireworks(context, fireworks);
 
-          // رسم جزيئات القلب
+          // رسم جزيئات القلب الأصلي
           var amount = particleRate * deltaTime;
           for (var i = 0; i < amount; i++) {
             var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
@@ -750,22 +750,87 @@ S.ShapeBuilder = (function () {
           particles.draw(context, image);
 
           // إعدادات الخط واللون مع تأثير الوميض والنور (Glow Effect)
-          context.fillStyle = '#ffffff'; 
+          context.fillStyle = '#ffffff'; // لون الكلام أبيض عشان الإضاءة تبان قوية
           context.font = 'bold 44px Arial'; 
           context.textAlign = 'center';
           context.textBaseline = 'middle';
           
-          context.shadowBlur = 15; 
-          context.shadowColor = '#ff69b4'; 
+          context.shadowBlur = 15; // قوة انتشار النور حوالين الكلمة
+          context.shadowColor = '#ff69b4'; // لون النور (وردي نيون)
 
-          // طبع السطور المنورة
+          // طبع السطر الأول (Happy Birthday) في المنتصف العلوي
           context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 30); 
-          context.fillText('🎂Manon🎂', canvas.width / 2, (canvas.height / 2) + 30);
           
-          context.shadowBlur = 0; // إعادة تصفير النور
+          // طبع السطر الثاني (Manon) تحت السطر الأول بالظبط
+          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 30);
+          
+          context.shadowBlur = 0; // إعادة تصفير النور لحماية الأنميشن
         }
         
-        
+        // دالة تصنيع وتحديث الصواريخ والفرقعة برة القلب
+        function updateAndDrawFireworks(ctx, list) {
+          if (Math.random() < 0.03) {
+            list.push({
+              x: Math.random() * ctx.canvas.width,
+              y: ctx.canvas.height,
+              tx: Math.random() * ctx.canvas.width,
+              ty: Math.random() * (ctx.canvas.height * 0.6),
+              color: 'hsl(' + (Math.random() * 360) + ', 100%, 60%)',
+              exploded: false,
+              particles: [],
+              velY: -(Math.random() * 4 + 7)
+            });
+          }
+
+          for (var i = list.length - 1; i >= 0; i--) {
+            var f = list[i];
+            if (!f.exploded) {
+              f.y += f.velY;
+              ctx.fillStyle = f.color;
+              ctx.fillRect(f.x, f.y, 3, 10);
+
+              if (f.y <= f.ty) {
+                f.exploded = true;
+                for (var p = 0; p < 40; p++) {
+                  var angle = Math.random() * Math.PI * 2;
+                  var speed = Math.random() * 4 + 2;
+                  f.particles.push({
+                    x: f.x,
+                    y: f.y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
+                    gravity: 0.08
+                  });
+                }
+              }
+            } else {
+              for (var j = f.particles.length - 1; j >= 0; j--) {
+                var p = f.particles[j];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.alpha -= 0.015;
+
+                if (p.alpha <= 0) {
+                  f.particles.splice(j, 1);
+                } else {
+                  ctx.fillStyle = f.color;
+                  ctx.globalAlpha = p.alpha;
+                  ctx.beginPath();
+                  ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                  ctx.fill();
+                }
+              }
+              ctx.globalAlpha = 1.0;
+
+              if (f.particles.length === 0) {
+                list.splice(i, 1);
+              }
+            }
+          }
+        }
+
         function onResize() {
           canvas.width = canvas.clientWidth;
           canvas.height = canvas.clientHeight;
