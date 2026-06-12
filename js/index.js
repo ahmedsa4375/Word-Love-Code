@@ -762,7 +762,7 @@ S.ShapeBuilder = (function () {
           context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 30); 
           
           // طبع السطر الثاني (Manon) تحت السطر الأول بالظبط
-          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 30);
+          context.fillText('🎂Manon🎂', canvas.width / 2, (canvas.height / 2) + 30);
           
           context.shadowBlur = 0; // إعادة تصفير النور لحماية الأنميشن
         }
