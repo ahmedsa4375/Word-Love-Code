@@ -722,6 +722,9 @@ S.ShapeBuilder = (function () {
           return image;
         })();
         
+     // مصفوفة لتخزين الصواريخ والانفجارات
+        var fireworks = [];
+
         function render() {
           requestAnimationFrame(render);
           var newTime = new Date().getTime() / 1000,
@@ -729,10 +732,14 @@ S.ShapeBuilder = (function () {
           time = newTime;
           context.clearRect(0, 0, canvas.width, canvas.height);
 
-          // إخفاء العنصر القديم (Wuv U...) تماماً عشان ميظهرش فوق كلامنا
+          // إخفاء العنصر القديم (Wuv U...) تماماً
           var oldElements = document.getElementsByClassName('namebox');
           for (var e = 0; e < oldElements.length; e++) { oldElements[e].style.display = 'none'; }
 
+          // رسم وتحديث الألعاب النارية (الصواريخ) في الخلفية 👇
+          updateAndDrawFireworks(context, fireworks);
+
+          // رسم جزيئات القلب
           var amount = particleRate * deltaTime;
           for (var i = 0; i < amount; i++) {
             var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
@@ -742,25 +749,22 @@ S.ShapeBuilder = (function () {
           particles.update(deltaTime);
           particles.draw(context, image);
 
- // إعدادات الخط واللون مع تأثير الوميض والنور (Glow Effect)
-          context.fillStyle = '#ffffff'; // خلّينا لون الكلام الأساسي أبيض عشان الإضاءة تبان قوية
+          // إعدادات الخط واللون مع تأثير الوميض والنور (Glow Effect)
+          context.fillStyle = '#ffffff'; 
           context.font = 'bold 44px Arial'; 
           context.textAlign = 'center';
           context.textBaseline = 'middle';
           
-          // هنا سر النور والوميض الوردي النيون 👇
-          context.shadowBlur = 15; // قوة انتشار النور حوالين الكلمة
-          context.shadowColor = '#ff69b4'; // لون النور (وردي فاقع يليق بالقلب)
+          context.shadowBlur = 15; 
+          context.shadowColor = '#ff69b4'; 
 
-          // طبع السطر الأول (Happy Birthday)
+          // طبع السطور المنورة
           context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 30); 
+          context.fillText('🎂Manon🎂', canvas.width / 2, (canvas.height / 2) + 30);
           
-          // طبع السطر الثاني (Manon) بنفس التأثير المضيء
-          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 30);
-          
-          // مهم جداً: بنصفر الـ shadow بعد ما نخلص عشان ميبوظش نور الأجزاء التانية من الأنميشن
-          context.shadowBlur = 0;
+          context.shadowBlur = 0; // إعادة تصفير النور
         }
+        
         
         function onResize() {
           canvas.width = canvas.clientWidth;
