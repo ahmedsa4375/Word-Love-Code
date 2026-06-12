@@ -1,4 +1,4 @@
- /*
+  /*
 
   Shape Shifter
   =============
@@ -728,6 +728,11 @@ S.ShapeBuilder = (function () {
             deltaTime = newTime - (time || newTime);
           time = newTime;
           context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // إخفاء العنصر القديم (Wuv U...) تماماً عشان ميظهرش فوق كلامنا
+          var oldElements = document.getElementsByClassName('namebox');
+          for (var e = 0; e < oldElements.length; e++) { oldElements[e].style.display = 'none'; }
+
           var amount = particleRate * deltaTime;
           for (var i = 0; i < amount; i++) {
             var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
