@@ -23,8 +23,8 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      // هنا تم تعديل الكلمات والترتيب ليطابق الفيديو بالظبط
-      S.UI.simulate("|#countdown 3||You|Are|My|Love||#rectangle|");
+      // هنا الكلمات الجديدة اللي طلبتها بالظبط يا غالي
+      S.UI.simulate("|#countdown 3||Are|You|Ready?||#rectangle|");
     }
 
     // Add a flag to track animation completion
@@ -98,7 +98,7 @@ S.Drawing = (function () {
 S.UI = (function () {
   var canvas = document.querySelector('.canvas'),
     interval,
-    isTouch = false, //('ontouchstart' in window || navigator.msMaxTouchPoints),
+    isTouch = false, 
     currentAction,
     resizeTimer,
     time,
@@ -152,10 +152,7 @@ S.UI = (function () {
       value,
       current;
 
-    // overlay.classList.remove('overlay--visible');
     sequence = typeof (value) === 'object' ? value : sequence.concat(value.split('|'));
-    // input.value = '';
-    // checkInputWidth();
 
     timedAction(function (index) {
       current = sequence.shift();
@@ -213,7 +210,7 @@ S.UI = (function () {
         default:
           S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'What?' : current));
       }
-    }, 3500, sequence.length); // تم زيادة الوقت هنا إلى 3500 لتظهر الكلمات براحتها
+    }, 3500, sequence.length); // تظبيط الوقت لـ 3.5 ثانية لكل كلمة
   }
 
   function checkInputWidth(e) {
@@ -434,11 +431,11 @@ S.Dot.prototype = {
 
 
 S.ShapeBuilder = (function () {
-  // تم تقليل الـ gap لـ 9 لزيادة كثافة وعدد الدوائر وجعل الكلمات أوضح
+  // الكثافة المظبوطة للدوائر
   var gap = 9,
     shapeCanvas = document.createElement('canvas'),
     shapeContext = shapeCanvas.getContext('2d'),
-    // تم تصغير الخط لـ 350 لتدخل الكلمات داخل الشاشة وتتجمع بشكل شيك
+    // حجم الخط المتناسق للشاشة
     fontSize = 350,
     fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
