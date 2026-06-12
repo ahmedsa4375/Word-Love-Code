@@ -747,7 +747,10 @@ S.ShapeBuilder = (function () {
           context.font = 'bold 30px Arial'; 
           context.textAlign = 'center';
           context.textBaseline = 'middle';
-          context.fillText('Happy Birthday /n Manon 🎂', canvas.width / 2, canvas.height / 2); 
+           // السطر الأول: هيدر عيد الميلاد
+          context.fillText('Happy Birthday', canvas.width / 2, (canvas.height / 2) - 25); 
+          // السطر الثاني: الاسم والتورتة وتحته بمسافة مظبوطة
+          context.fillText('Manon 🎂', canvas.width / 2, (canvas.height / 2) + 25);
         }
         
         function onResize() {
