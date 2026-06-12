@@ -1,4 +1,4 @@
-/*
+ /*
 
   Shape Shifter
   =============
@@ -23,7 +23,8 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-       S.UI.simulate("|#countdown 3||I|Love|Mariam||#rectangle|");
+      // هنا تم تعديل الكلمات والترتيب ليطابق الفيديو بالظبط
+      S.UI.simulate("|#countdown 3||You|Are|My|Love||#rectangle|");
     }
 
     // Add a flag to track animation completion
@@ -212,7 +213,7 @@ S.UI = (function () {
         default:
           S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'What?' : current));
       }
-    }, 2000, sequence.length);
+    }, 3500, sequence.length); // تم زيادة الوقت هنا إلى 3500 لتظهر الكلمات براحتها
   }
 
   function checkInputWidth(e) {
@@ -239,60 +240,10 @@ S.UI = (function () {
         performAction(input.value);
       }
     });
-
-    // input.addEventListener('input', checkInputWidth);
-    // input.addEventListener('change', checkInputWidth);
-    // input.addEventListener('focus', checkInputWidth);
-
-    // help.addEventListener('click', function (e) {
-    //   overlay.classList.toggle('overlay--visible');
-    //   overlay.classList.contains('overlay--visible') && reset(true);
-    // });
-
-    // commands.addEventListener('click', function (e) {
-    //   var el,
-    //       info,
-    //       demo,
-    //       tab,
-    //       active,
-    //       url;
-    //
-    //   if (e.target.classList.contains('commands-item')) {
-    //     el = e.target;
-    //   } else {
-    //     el = e.target.parentNode.classList.contains('commands-item') ? e.target.parentNode : e.target.parentNode.parentNode;
-    //   }
-    //
-    //   info = el && el.querySelector('.commands-item-info');
-    //   demo = el && info.getAttribute('data-demo');
-    //   url = el && info.getAttribute('data-url');
-    //
-    //   if (info) {
-    //     overlay.classList.remove('overlay--visible');
-    //
-    //     if (demo) {
-    //       input.value = demo;
-    //
-    //       if (isTouch) {
-    //         reset();
-    //         performAction(input.value);
-    //       } else {
-    //         input.focus();
-    //       }
-    //     } else if (url) {
-    //       //window.location = url;
-    //     }
-    //   }
-    // });
-
-    canvas.addEventListener('click', function (e) {
-      overlay.classList.remove('overlay--visible');
-    });
   }
 
   function init() {
     bindEvents();
-    // input.focus();
     isTouch && document.body.classList.add('touch');
   }
 
@@ -483,10 +434,12 @@ S.Dot.prototype = {
 
 
 S.ShapeBuilder = (function () {
-  var gap = 13,
+  // تم تقليل الـ gap لـ 9 لزيادة كثافة وعدد الدوائر وجعل الكلمات أوضح
+  var gap = 9,
     shapeCanvas = document.createElement('canvas'),
     shapeContext = shapeCanvas.getContext('2d'),
-    fontSize = 500,
+    // تم تصغير الخط لـ 350 لتدخل الكلمات داخل الشاشة وتتجمع بشكل شيك
+    fontSize = 350,
     fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
   function fit() {
@@ -597,15 +550,15 @@ S.ShapeBuilder = (function () {
 
       var elements = document.getElementsByClassName('namebox');
       for (var i = 0; i < elements.length; i++) {
-        elements[i].style.opacity = 1; // Set opacity to 100%
+        elements[i].style.opacity = 1; 
       }
       var settings = {
         particles: {
-          length: 500, // maximum amount of particles
-          duration: 2, // particle duration in sec
-          velocity: 100, // particle velocity in pixels/sec
-          effect: -0.75, // play with this for a nice effect
-          size: 30, // particle size in pixels
+          length: 500, 
+          duration: 2, 
+          velocity: 100, 
+          effect: -0.75, 
+          size: 30, 
         },
       };
       (
@@ -684,25 +637,19 @@ S.ShapeBuilder = (function () {
         };
         return Particle;
       })();
-      /*
-      
-      * ParticlePool class
-      
-      */
+
       var ParticlePool = (function () {
         var particles,
           firstActive = 0,
           firstFree = 0,
           duration = settings.particles.duration;
         function ParticlePool(length) {
-          // create and populate particle pool
           particles = new Array(length);
           for (var i = 0; i < particles.length; i++)
             particles[i] = new Particle();
         }
         ParticlePool.prototype.add = function (x, y, dx, dy) {
           particles[firstFree].initialize(x, y, dx, dy);
-          // handle circular queue
           firstFree++;
           if (firstFree == particles.length) firstFree = 0;
           if (firstActive == firstFree) firstActive++;
@@ -710,7 +657,6 @@ S.ShapeBuilder = (function () {
         };
         ParticlePool.prototype.update = function (deltaTime) {
           var i;
-          // update active particles
           if (firstActive < firstFree) {
             for (i = firstActive; i < firstFree; i++)
               particles[i].update(deltaTime);
@@ -721,14 +667,12 @@ S.ShapeBuilder = (function () {
             for (i = 0; i < firstFree; i++)
               particles[i].update(deltaTime);
           }
-          // remove inactive particles
           while (particles[firstActive].age >= duration && firstActive != firstFree) {
             firstActive++;
             if (firstActive == particles.length) firstActive = 0;
           }
         };
         ParticlePool.prototype.draw = function (context, image) {
-          // draw active particles
           if (firstActive < firstFree) {
             for (i = firstActive; i < firstFree; i++)
               particles[i].draw(context, image);
@@ -742,17 +686,12 @@ S.ShapeBuilder = (function () {
         };
         return ParticlePool;
       })();
-      /*
-      
-      * Putting it all together
-      
-      */
+
       (function (canvas) {
         var context = canvas.getContext('2d'),
           particles = new ParticlePool(settings.particles.length),
-          particleRate = settings.particles.length / settings.particles.duration, // particles/sec
+          particleRate = settings.particles.length / settings.particles.duration, 
           time;
-        // get point on heart with -PI <= t <= PI
         function pointOnHeart(t) {
           return new Point(
             160 * Math.pow(Math.sin(t), 3),
@@ -761,68 +700,53 @@ S.ShapeBuilder = (function () {
 
         }
 
-        // creating the particle image using a dummy canvas
-
         var image = (function () {
           var canvas = document.createElement('canvas'),
             context = canvas.getContext('2d');
           canvas.width = settings.particles.size;
           canvas.height = settings.particles.size;
-          // helper function to create the path
           function to(t) {
             var point = pointOnHeart(t);
             point.x = settings.particles.size / 2 + point.x * settings.particles.size / 350;
             point.y = settings.particles.size / 2 - point.y * settings.particles.size / 350;
             return point;
           }
-          // create the path
           context.beginPath();
           var t = -Math.PI;
           var point = to(t);
           context.moveTo(point.x, point.y);
           while (t < Math.PI) {
-            t += 0.01; // baby steps!
+            t += 0.01; 
             point = to(t);
             context.lineTo(point.x, point.y);
           }
           context.closePath();
-          // create the fill
           context.fillStyle = '#ff30c5';
-          // context.fillStyle = '#ea80b0';
           context.fill();
-          // create the image
           var image = new Image();
           image.src = canvas.toDataURL();
           return image;
         })();
-        // render that thing!
         function render() {
-          // next animation frame
           requestAnimationFrame(render);
-          // update time
           var newTime = new Date().getTime() / 1000,
             deltaTime = newTime - (time || newTime);
           time = newTime;
-          // clear canvas
           context.clearRect(0, 0, canvas.width, canvas.height);
-          // create new particles
           var amount = particleRate * deltaTime;
           for (var i = 0; i < amount; i++) {
             var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
             var dir = pos.clone().length(settings.particles.velocity);
             particles.add(canvas.width / 2 + pos.x, canvas.height / 2 - pos.y, dir.x, -dir.y);
           }
-          // update and draw particles
           particles.update(deltaTime);
           particles.draw(context, image);
         }
-        // handle (re-)sizing of the canvas
         function onResize() {
           canvas.width = canvas.clientWidth;
           canvas.height = canvas.clientHeight;
         }
         window.onresize = onResize;
-        // delay rendering bootstrap
         setTimeout(function () {
           onResize();
           render();
@@ -924,7 +848,7 @@ S.Shape = (function () {
           dots[i].move(new S.Point({
             x: Math.random() * a.w,
             y: Math.random() * a.h,
-            a: 0.3, //.4
+            a: 0.3, 
             z: Math.random() * 4,
             h: 0
           }));
