@@ -23,7 +23,7 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      S.UI.simulate("|#countdown 3||You|Are|My|Love||#rectangle|");
+      S.UI.simulate("|#countdown 3||Are|You|Ready?||#rectangle|");
     }
 
     // Add a flag to track animation completion
@@ -209,7 +209,7 @@ S.UI = (function () {
         default:
           S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'What?' : current));
       }
-    }, 2000, sequence.length);
+    }, 3500, sequence.length);
   }
 
   function checkInputWidth(e) {
@@ -235,10 +235,6 @@ S.UI = (function () {
         reset();
         performAction(input.value);
       }
-    });
-
-    canvas.addEventListener('click', function (e) {
-      overlay.classList.remove('overlay--visible');
     });
   }
 
@@ -434,10 +430,10 @@ S.Dot.prototype = {
 
 
 S.ShapeBuilder = (function () {
-  var gap = 13,
+  var gap = 9,
     shapeCanvas = document.createElement('canvas'),
     shapeContext = shapeCanvas.getContext('2d'),
-    fontSize = 500,
+    fontSize = 350,
     fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
   function fit() {
@@ -545,7 +541,11 @@ S.ShapeBuilder = (function () {
     },
 
     rectangle: function (w, h) {
-      // تم مسح الأكواد القديمة اللي كانت بتظهر الاسم القديم هنا لتفادي التداخل
+
+      var elements = document.getElementsByClassName('namebox');
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.opacity = 1; 
+      }
       var settings = {
         particles: {
           length: 500, 
@@ -737,7 +737,7 @@ S.ShapeBuilder = (function () {
           particles.update(deltaTime);
           particles.draw(context, image);
 
-          // الجملة الجديدة بتاعتك لوحدها ومن غير أي تداخل وبخط واضح
+          // الجملة الجديدة بالإنجليزية جوة القلب بالظبط هنا يا غالي
           context.fillStyle = '#ff69b4'; 
           context.font = 'bold 40px Arial'; 
           context.textAlign = 'center';
