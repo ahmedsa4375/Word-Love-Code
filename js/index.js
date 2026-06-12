@@ -23,7 +23,6 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      // هنا الكلمات الجديدة اللي طلبتها بالظبط يا غالي
       S.UI.simulate("|#countdown 3||Are|You|Ready?||#rectangle|");
     }
 
@@ -210,7 +209,7 @@ S.UI = (function () {
         default:
           S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'What?' : current));
       }
-    }, 3500, sequence.length); // تظبيط الوقت لـ 3.5 ثانية لكل كلمة
+    }, 3500, sequence.length);
   }
 
   function checkInputWidth(e) {
@@ -431,11 +430,9 @@ S.Dot.prototype = {
 
 
 S.ShapeBuilder = (function () {
-  // الكثافة المظبوطة للدوائر
   var gap = 9,
     shapeCanvas = document.createElement('canvas'),
     shapeContext = shapeCanvas.getContext('2d'),
-    // حجم الخط المتناسق للشاشة
     fontSize = 350,
     fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
@@ -724,6 +721,7 @@ S.ShapeBuilder = (function () {
           image.src = canvas.toDataURL();
           return image;
         })();
+        
         function render() {
           requestAnimationFrame(render);
           var newTime = new Date().getTime() / 1000,
@@ -738,7 +736,15 @@ S.ShapeBuilder = (function () {
           }
           particles.update(deltaTime);
           particles.draw(context, image);
+
+          // الجملة الجديدة بالإنجليزية جوة القلب بالظبط هنا يا غالي
+          context.fillStyle = '#ff69b4'; 
+          context.font = 'bold 40px Arial'; 
+          context.textAlign = 'center';
+          context.textBaseline = 'middle';
+          context.fillText('Happy Birthday Manon 🎂', canvas.width / 2, canvas.height / 2); 
         }
+        
         function onResize() {
           canvas.width = canvas.clientWidth;
           canvas.height = canvas.clientHeight;
